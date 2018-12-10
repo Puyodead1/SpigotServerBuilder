@@ -22,7 +22,7 @@ public class MainGUI {
 	public static String outputPath;
 	public static String version;
 	public static Text console;
-
+	
 	public static void Rev() {
 		switch (version) {
 		case "latest":
@@ -89,7 +89,7 @@ public class MainGUI {
 	 */
 	public void open() {
 		Display display = Display.getDefault();
-		createContents();
+		createContents(display);
 		shlSpigotServerBuilder.open();
 		shlSpigotServerBuilder.layout();
 		while (!shlSpigotServerBuilder.isDisposed()) {
@@ -102,9 +102,9 @@ public class MainGUI {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents() {
-		shlSpigotServerBuilder = new Shell();
-		shlSpigotServerBuilder.setSize(1220, 780);
+	protected void createContents(Display display) {
+		shlSpigotServerBuilder = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
+		shlSpigotServerBuilder.setSize(1220, 680);
 		shlSpigotServerBuilder.setText("Spigot Server Builder V2.1 by Puyodead1");
 		shlSpigotServerBuilder.setLayout(null);
 
@@ -176,7 +176,7 @@ public class MainGUI {
 		
 		Label lblCompiledOn = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblCompiledOn.setBounds(15, 300, 300, 15);
-		lblCompiledOn.setText("Compiled on 12/09/2018 at 10:11PM EST");
+		lblCompiledOn.setText("Compiled on 12/10/2018 at 11:11AM EST");
 
 		txtOut = new Text(shlSpigotServerBuilder, SWT.BORDER);
 		txtOut.addKeyListener(new KeyAdapter() {
