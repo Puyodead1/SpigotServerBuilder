@@ -21,6 +21,7 @@ public class Utils {
 		SSB.Log(">>>>>>> Complete! Please use the Launcher.bat file to start your new server! Enjoy! <<<<<<<");
 		SSB.Log(">>>>>>> --------------------------------------------------------------------------- <<<<<<<");
 	}
+
 	public static boolean CreateEULA() {
 		SSB.Log(">>>>>>> ------------------------------------------------------- <<<<<<<");
 		SSB.Log(">>>>>>> PLEASE MAKE SURE YOU READ AND AGREE TO THE Mojang EULA! <<<<<<<");
@@ -197,13 +198,14 @@ public class Utils {
 
 	public static void runBT() {
 		String[] command = { "CMD", "/C",
-				"cd " + MainGUI.outputPath + "\\BuildTools && start java -jar BuildTools.jar && exit && exit" };
+				"cd /d" + MainGUI.outputPath + "\\BuildTools && java -jar BuildTools.jar" };
 		try {
 			ProcessBuilder builder = new ProcessBuilder(command);
 			// builder.redirectErrorStream(true);
 			SSB.Log("Waiting...");
 			Process p = builder.start();
 			p.waitFor();
+			SSB.Log(p.getInputStream().toString());
 			System.out.println(p.getInputStream().read());
 			try {
 				int exitValue = p.waitFor();

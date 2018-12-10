@@ -22,7 +22,7 @@ public class MainGUI {
 	public static String outputPath;
 	public static String version;
 	public static Text console;
-	
+
 	public static void Rev() {
 		switch (version) {
 		case "latest":
@@ -117,6 +117,12 @@ public class MainGUI {
 				case "[latest]":
 					version = "latest";
 					break;
+				case "[1.13.2]":
+					version = "1.13.2";
+					break;
+				case "[1.13.1]":
+					version = "1.13.1";
+					break;
 				case "[1.13]":
 					version = "1.13";
 					break;
@@ -169,14 +175,14 @@ public class MainGUI {
 		Label lblChooseOutputPath = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblChooseOutputPath.setBounds(150, 10, 167, 15);
 		lblChooseOutputPath.setText("Enter Path to output directory:");
-		
+
 		Label lblCopyright = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblCopyright.setBounds(15, 250, 300, 15);
 		lblCopyright.setText("Copyright 2018 Puyodead1 and Puyodead1 Development");
-		
+
 		Label lblCompiledOn = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblCompiledOn.setBounds(15, 300, 300, 15);
-		lblCompiledOn.setText("Compiled on 12/10/2018 at 11:11AM EST");
+		lblCompiledOn.setText("Compiled on 12/10/2018 at 2:53PM EST");
 
 		txtOut = new Text(shlSpigotServerBuilder, SWT.BORDER);
 		txtOut.addKeyListener(new KeyAdapter() {
@@ -235,8 +241,8 @@ public class MainGUI {
 		console.setEditable(false);
 		scrolledComposite.setContent(console);
 		scrolledComposite.setMinSize(console.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		String[] versions = { "latest", "1.13", "1.12.2", "1.12.1", "1.12", "1.11", "1.10", "1.9.4", "1.9.2", "1.9",
-				"1.8.8", "1.8.7", "1.8.3", "1.8" };
+		String[] versions = { "latest", "1.13", "1.13.2", "1.13.1", "1.12.2", "1.12.1", "1.12", "1.11", "1.10", "1.9.4",
+				"1.9.2", "1.9", "1.8.8", "1.8.7", "1.8.3", "1.8" };
 		for (int i = 0; i < versions.length; i++) {
 			list.add(versions[i]);
 		}
