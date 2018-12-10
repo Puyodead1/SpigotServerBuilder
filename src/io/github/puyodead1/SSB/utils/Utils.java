@@ -198,7 +198,7 @@ public class Utils {
 
 	public static void runBT() {
 		String[] command = { "CMD", "/C",
-				"cd /d" + MainGUI.outputPath + "\\BuildTools && start java -jar BuildTools.jar" };
+				"cd /d" + MainGUI.outputPath + "\\BuildTools && java -jar BuildTools.jar" };
 		try {
 			ProcessBuilder builder = new ProcessBuilder(command);
 			// builder.redirectErrorStream(true);
