@@ -5,7 +5,7 @@ import io.github.puyodead1.SSB.utils.Utils;
 public class SSB {
 	public static String rev;
 	public static String buildToolsDownloadURL = "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar";
-
+	
 	public static void Log(String log) {
 		MainGUI.console.append(log + "\n");
 	}

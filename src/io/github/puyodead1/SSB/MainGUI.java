@@ -22,11 +22,21 @@ public class MainGUI {
 	public static String outputPath;
 	public static String version;
 	public static Text console;
+	private static String SSBVersion = "2.4";
 
 	public static void Rev() {
 		switch (version) {
 		case "latest":
 			SSB.rev = "latest";
+			break;
+		case "1.13.2":
+			SSB.rev = "1.13.2";
+			break;
+		case "1.13.1":
+			SSB.rev = "1.13.1";
+			break;
+		case "1.13":
+			SSB.rev = "1.13";
 			break;
 		case "1.12.2":
 			SSB.rev = "1.12.2";
@@ -105,7 +115,7 @@ public class MainGUI {
 	protected void createContents(Display display) {
 		shlSpigotServerBuilder = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
 		shlSpigotServerBuilder.setSize(1220, 680);
-		shlSpigotServerBuilder.setText("Spigot Server Builder V2.1 by Puyodead1");
+		shlSpigotServerBuilder.setText("Spigot Server Builder " + SSBVersion + " by Puyodead1");
 		shlSpigotServerBuilder.setLayout(null);
 
 		List list = new List(shlSpigotServerBuilder, SWT.BORDER);
@@ -182,7 +192,7 @@ public class MainGUI {
 
 		Label lblCompiledOn = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblCompiledOn.setBounds(15, 300, 300, 15);
-		lblCompiledOn.setText("Compiled on 12/10/2018 at 2:53PM EST");
+		lblCompiledOn.setText("Compiled on 12/10/2018 at 5:50PM EST");
 
 		txtOut = new Text(shlSpigotServerBuilder, SWT.BORDER);
 		txtOut.addKeyListener(new KeyAdapter() {
