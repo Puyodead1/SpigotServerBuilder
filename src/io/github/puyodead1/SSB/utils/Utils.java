@@ -3,18 +3,22 @@ package io.github.puyodead1.SSB.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
 
-import io.github.puyodead1.SSB.DownloadURL;
+import io.github.puyodead1.SSB.Download;
 import io.github.puyodead1.SSB.MainGUI;
 import io.github.puyodead1.SSB.SSB;
 
-public class Utils {
-	public static String OS;
-	private static File msysDir;
+public class Utils extends Thread {
+	public static String OS, spigotName;
+	public static Download download;
 
 	public static void Complete() {
 		SSB.Log(">>>>>>> --------------------------------------------------------------------------- <<<<<<<");
@@ -23,15 +27,6 @@ public class Utils {
 	}
 
 	public static boolean CreateEULA() {
-		SSB.Log(">>>>>>> ------------------------------------------------------- <<<<<<<");
-		SSB.Log(">>>>>>> PLEASE MAKE SURE YOU READ AND AGREE TO THE Mojang EULA! <<<<<<<");
-		SSB.Log(">>>>>>> ------------------------------------------------------- <<<<<<<");
-		SSB.Log("Continuing in 5 seconds...");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			SSB.Log(e1.getMessage());
-		}
 		if (!Utils.CheckForFile(MainGUI.outputPath + "\\SpigotServer\\eula.txt")) {
 			// EULA file doesn't exist, we create it here
 			try {
@@ -44,6 +39,9 @@ public class Utils {
 			} catch (IOException e) {
 				// Error creating that EULA file 0_0
 				SSB.Log("Error creating the EULA.txt file!" + e.getMessage());
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				SSB.Log(writer.toString());
 				return false;
 			}
 		} else {
@@ -59,7 +57,9 @@ public class Utils {
 				SSB.Log("EULA Re-Write Complete!");
 				return true;
 			} catch (IOException e) {
-				e.printStackTrace();
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				SSB.Log(writer.toString());
 				return false;
 			}
 		}
@@ -76,59 +76,29 @@ public class Utils {
 		}
 	}
 
-	public static boolean CheckForBuildTools(String path) {
-		String btpath = path + "\\BuildTools\\BuildTools.jar";
-		File in = new File(btpath);
-		if (!in.exists()) {
-			SSB.Log("BuildTools.jar not found, Checking for Spigot");
-			Utils.CheckForSpigotInBT(MainGUI.outputPath);
-			return false;
-		} else {
-			// true. we found BT
-			SSB.Log("BuildTools.jar found, Checking for Spigot");
-			Utils.CheckForSpigotInBT(MainGUI.outputPath);
-			return true;
-		}
-	}
-
-	public static boolean CheckForSpigotInBT(String path) {
-		String spath = path + "\\BuildTools\\spigot-" + MainGUI.version + ".jar";
-		File in = new File(spath);
-		if (!in.exists()) {
-			SSB.Log("We didn't find Spigot :(");
-			DownloadBuildTools();
-			runBT();
-			return false;
-		} else {
-			// return true If we find file
-			SSB.Log("Found Existing Spigot jar. Using it!");
-			// TODO: COPY SPIGOT
-			CopyFile(MainGUI.outputPath + "\\BuildTools\\spigot-1.12.2.jar",
-					MainGUI.outputPath + "\\SpigotServer\\spigot-1.12.2.jar");
-			return true;
-		}
-	}
-
-	public static boolean LauncherHandlerWindows() {
+	public static void LauncherHandlerWindows() {
 		if (CheckForFile(MainGUI.outputPath + "\\SpigotServer\\Launcher.bat")) {
 			// true if exists
 			SSB.Log("Launcher exists.. Skipping...");
 			Complete();
-			return true;
 		} else {
 			// false if no
 			File launcher = new File(MainGUI.outputPath + "\\SpigotServer\\Launcher.bat");
 			try {
 				launcher.createNewFile();
 				PrintWriter pw = new PrintWriter(MainGUI.outputPath + "\\SpigotServer\\Launcher.bat");
-				pw.write("java -jar spigot-" + MainGUI.version + ".jar");
+				if(spigotName.isEmpty()) {
+					pw.write(String.format("java -jar spigot-%s.jar", MainGUI.version));	
+				} else {
+					pw.write(String.format("java -jar %s", spigotName));
+				}
 				pw.close();
 				SSB.Log("Launcher write complete.");
 				Complete();
-				return true;
 			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				SSB.Log(writer.toString());
 			}
 		}
 	}
@@ -137,24 +107,19 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean CheckForDirectory(String path) {
+	public static void CheckForDirectory(String path) {
 		File in = new File(path);
 		if (!in.exists()) {
 			// false not exists
 			try {
 				CreateDirectory(path);
 				SSB.Log("Created Directory at: " + path);
-				return true;
 			} catch (Exception e) {
-				SSB.Log(e.getMessage());
-				System.exit(1);
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				SSB.Log(writer.toString());
 			}
-			return false;
-		} else {
-			// return true If we find file
-			SSB.Log("Directory Exists!");
-			return true;
-		}
+		} 
 	}
 
 	public static boolean CreateDirectory(String path) {
@@ -167,28 +132,27 @@ public class Utils {
 				return false;
 			} else {
 				SSB.Log("Oops, an error occured creating directory...");
-				SSB.Log(e.toString());
+				StringWriter writer = new StringWriter();
+				e.printStackTrace(new PrintWriter(writer));
+				SSB.Log(writer.toString());
 				return false;
 			}
 		}
 	}
 
-	public static boolean DownloadBuildTools() {
-		if (DownloadURL.Download(
-				"https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar",
-				MainGUI.outputPath + "\\BuildTools\\BuildTools.jar")) {
-			SSB.Log("Downloaded BuildTools.jar!");
-			return true; // if Success
-		} else {
-			SSB.Log("Failed to download BuildTools.jar! Sleeping for 10 seconds then exiting!");
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				SSB.Log(e.getMessage());
-			}
-			System.exit(1);
-			return false;// iF Fail
+	public static void DownloadBuildTools() {
+		URL url = null;
+		try {
+			url = new URL(
+					"https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar");
+
+			download = new Download(url, MainGUI.outputPath + "\\BuildTools\\BuildTools.jar");
+
+		} catch (MalformedURLException e) {
+			SSB.Log("Cought a Malformed URL Exception!");
+			StringWriter writer = new StringWriter();
+			e.printStackTrace(new PrintWriter(writer));
+			SSB.Log(writer.toString());
 		}
 	}
 
@@ -197,29 +161,8 @@ public class Utils {
 	}
 
 	public static void runBT() {
-		String[] command = { "CMD", "/C",
-				"cd /d" + MainGUI.outputPath + "\\BuildTools && java -jar BuildTools.jar" };
-		try {
-			ProcessBuilder builder = new ProcessBuilder(command);
-			// builder.redirectErrorStream(true);
-			SSB.Log("Waiting...");
-			Process p = builder.start();
-			p.waitFor();
-			SSB.Log(p.getInputStream().toString());
-			System.out.println(p.getInputStream().read());
-			try {
-				int exitValue = p.waitFor();
-				System.out.println("\n\nExit Value is " + exitValue);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			SSB.Log("Done...");
-		} catch (Exception e) {
-			e.printStackTrace();
-			SSB.Log("Error");
-			System.exit(1);
-		}
+		Thread thread = new CompileBT();
+		thread.start();
 	}
 
 	public static boolean isWindows() {
@@ -249,17 +192,32 @@ public class Utils {
 	public static void GetOS() {
 		OS = System.getProperty("os.name").toLowerCase();
 	}
+	public static void CopySpigotJar() {
+		File btFolder = new File(String.format("%s\\BuildTools", MainGUI.outputPath));
 
-	public static boolean CopyFile(String sourcePath, String destPath) {
-		File source = new File(sourcePath);
-		File dest = new File(destPath);
-		try {
-			FileUtils.copyFile(source, dest);
-			SSB.Log("File Copied!");
-			return true;
-		} catch (IOException e) {
-			SSB.Log("Failed to copy File!" + e.getMessage());
-			return false;
+		File[] files = btFolder.listFiles();
+		for (File file : files) {
+			if (file.getName().split("-")[0].equals("spigot")) {
+				try {
+					spigotName = file.getName();
+					File serverFolder = new File(String.format("%s\\SpigotServer\\%s", MainGUI.outputPath, file.getName()));
+					FileUtils.copyFile(file, serverFolder);
+				} catch (IOException e) {
+					SSB.Log("Failed to copy spigot jar!");
+					
+					StringWriter writer = new StringWriter();
+					e.printStackTrace(new PrintWriter(writer));
+					SSB.Log(writer.toString());
+					return;
+				}
+			}
 		}
+		
+		Thread scrub = new ScrubDirectory();
+		scrub.start();
+	}
+
+	public static String html2text(String html) {
+		return Jsoup.parse(html).text();
 	}
 }

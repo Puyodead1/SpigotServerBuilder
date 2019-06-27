@@ -1,6 +1,5 @@
-server
-ssb.jar
 .project
 .classpath
 .settings
 bin
+SpigotServerBuilder-2.5.jar

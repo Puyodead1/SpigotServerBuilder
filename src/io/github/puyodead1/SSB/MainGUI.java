@@ -1,84 +1,34 @@
 package io.github.puyodead1.SSB;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import io.github.puyodead1.SSB.utils.Utils;
 
 public class MainGUI {
 
 	protected Shell shlSpigotServerBuilder;
-	private Text txtOut;
-	public static String outputPath;
-	public static String version;
-	public static Text console;
-	private static String SSBVersion = "2.4";
+	public static Text console, text;
+	public static Combo combo;
+	public static Label downloadProgress;
 
-	public static void Rev() {
-		switch (version) {
-		case "latest":
-			SSB.rev = "latest";
-			break;
-		case "1.13.2":
-			SSB.rev = "1.13.2";
-			break;
-		case "1.13.1":
-			SSB.rev = "1.13.1";
-			break;
-		case "1.13":
-			SSB.rev = "1.13";
-			break;
-		case "1.12.2":
-			SSB.rev = "1.12.2";
-			break;
-		case "1.12.1":
-			SSB.rev = "1.12.1";
-			break;
-		case "1.12":
-			SSB.rev = "1.12";
-			break;
-		case "1.11":
-			SSB.rev = "1.11";
-			break;
-		case "1.10":
-			SSB.rev = "1.10";
-			break;
-		case "1.9.4":
-			SSB.rev = "1.9.4";
-			break;
-		case "1.9.2":
-			SSB.rev = "1.9.2";
-			break;
-		case "1.9":
-			SSB.rev = "1.9";
-			break;
-		case "1.8.8":
-			SSB.rev = "1.8.8";
-			break;
-		case "1.8.7":
-			SSB.rev = "1.8.7";
-			break;
-		case "1.8.3":
-			SSB.rev = "1.8.3";
-			break;
-		case "1.8":
-			SSB.rev = "1.8";
-			break;
-		default:
-			SSB.rev = "latest";
-			break;
-		}
-	}
+	public static boolean acceptedEULA = false;
+	public static String outputPath, version, SSBVersion = "2.5";
+	public static ArrayList<String> versions = new ArrayList<String>();
 
 	/**
 	 * Launch the application.
@@ -86,10 +36,28 @@ public class MainGUI {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// fetch all spigot versions
+		URL url;
 		try {
+			url = new URL("https://hub.spigotmc.org/versions/");
+
+			Scanner sc = new Scanner(url.openStream());
+			while (sc.hasNextLine()) {
+				String version = Utils.html2text(sc.nextLine()).split(".json")[0];
+				if (!version.isEmpty() && !version.contains("Index")) {
+					if (version.contains(".")) {
+						versions.add(version);
+					}
+				}
+			}
+
+			sc.close();
+
+			// open main window
+
 			MainGUI window = new MainGUI();
 			window.open();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -114,118 +82,47 @@ public class MainGUI {
 	 */
 	protected void createContents(Display display) {
 		shlSpigotServerBuilder = new Shell(display, SWT.CLOSE | SWT.TITLE | SWT.MIN);
-		shlSpigotServerBuilder.setSize(1220, 680);
+		shlSpigotServerBuilder.setSize(1220, 492);
 		shlSpigotServerBuilder.setText("Spigot Server Builder " + SSBVersion + " by Puyodead1");
 		shlSpigotServerBuilder.setLayout(null);
 
-		List list = new List(shlSpigotServerBuilder, SWT.BORDER);
-		list.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				String selectedVersion = Arrays.toString(list.getSelection());
-				switch (selectedVersion) {
-				case "[latest]":
-					version = "latest";
-					break;
-				case "[1.13.2]":
-					version = "1.13.2";
-					break;
-				case "[1.13.1]":
-					version = "1.13.1";
-					break;
-				case "[1.13]":
-					version = "1.13";
-					break;
-				case "[1.12.2]":
-					version = "1.12.2";
-					break;
-				case "[1.12.1]":
-					version = "1.12.1";
-					break;
-				case "[1.12]":
-					version = "1.12";
-					break;
-				case "[1.11]":
-					version = "1.11";
-					break;
-				case "[1.10]":
-					version = "1.10";
-					break;
-				case "[1.9.4]":
-					version = "1.9.4";
-					break;
-				case "[1.9.2]":
-					version = "1.9.2";
-					break;
-				case "[1.9]":
-					version = "1.9";
-					break;
-				case "[1.8.8]":
-					version = "1.8.8";
-					break;
-				case "[1.8.7]":
-					version = "1.8.7";
-					break;
-				case "[1.8.3]":
-					version = "1.8.3";
-					break;
-				case "[1.8]":
-					version = "1.8";
-					break;
-				}
-				Rev();
-			}
-		});
-		list.setBounds(34, 31, 63, 207);
-
 		Label lblSelectAVersion = new Label(shlSpigotServerBuilder, SWT.NONE);
-		lblSelectAVersion.setBounds(24, 10, 93, 15);
+		lblSelectAVersion.setBounds(15, 10, 93, 15);
 		lblSelectAVersion.setText("Select a version:");
 
 		Label lblChooseOutputPath = new Label(shlSpigotServerBuilder, SWT.NONE);
-		lblChooseOutputPath.setBounds(150, 10, 167, 15);
-		lblChooseOutputPath.setText("Enter Path to output directory:");
+		lblChooseOutputPath.setBounds(190, 10, 100, 15);
+		lblChooseOutputPath.setText("Output Directory:");
 
 		Label lblCopyright = new Label(shlSpigotServerBuilder, SWT.NONE);
-		lblCopyright.setBounds(15, 250, 300, 15);
-		lblCopyright.setText("Copyright 2018 Puyodead1 and Puyodead1 Development");
-
-		Label lblCompiledOn = new Label(shlSpigotServerBuilder, SWT.NONE);
-		lblCompiledOn.setBounds(15, 300, 300, 15);
-		lblCompiledOn.setText("Compiled on 12/10/2018 at 5:50PM EST");
-
-		txtOut = new Text(shlSpigotServerBuilder, SWT.BORDER);
-		txtOut.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if (arg0.keyCode == 13) {
-					outputPath = txtOut.getText();
-					console.append("Set output path to: " + outputPath + "\n");
-				}
-			}
-		});
-
-		txtOut.setText("Directory output path");
-		txtOut.setBounds(160, 32, 126, 21);
+		lblCopyright.setBounds(3, 435, 177, 15);
+		lblCopyright.setText("Copyright 2018-2019 Puyodead1");
 
 		Button btnGo = new Button(shlSpigotServerBuilder, SWT.NONE);
 		btnGo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e1) {
-				console.setText(" ");
-				if (txtOut.getText() != null || txtOut.getText() != "Directory output path") {
-					outputPath = txtOut.getText();
-					console.append("Set output path to: " + outputPath + "\n");
+				if (acceptedEULA) {
+					if(!outputPath.isEmpty()) {
+						version = combo.getText();
+						console.setText("");
+						SSB.Log("Starting...");
+						SSB.Log("Using version: " + version);
+						SSB.Init();
+						btnGo.setEnabled(false);
+					} else {
+						SSB.Log("Please choose the output directory!");
+					}
+				} else {
+					SSB.Log("You need to accept the Mojang EULA to continue!");
 				}
-				console.append("Started!\n");
-				SSB.Init();
 			}
 		});
-		btnGo.setBounds(163, 83, 126, 74);
-		btnGo.setText("GO!");
+		btnGo.setBounds(150, 71, 238, 74);
+		btnGo.setText("Create");
 
 		Label label = new Label(shlSpigotServerBuilder, SWT.SEPARATOR | SWT.VERTICAL);
-		label.setBounds(332, 0, 2, 464);
+		label.setBounds(418, 0, 2, 464);
 
 		Label lblOutput = new Label(shlSpigotServerBuilder, SWT.NONE);
 		lblOutput.setAlignment(SWT.CENTER);
@@ -233,17 +130,17 @@ public class MainGUI {
 		lblOutput.setText("Output:");
 
 		Label label_1 = new Label(shlSpigotServerBuilder, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label_1.setBounds(123, 59, 211, 2);
+		label_1.setBounds(123, 59, 297, 2);
 
 		Label label_2 = new Label(shlSpigotServerBuilder, SWT.SEPARATOR | SWT.VERTICAL);
-		label_2.setBounds(123, 0, 2, 246);
+		label_2.setBounds(123, 0, 2, 163);
 
 		Label label_3 = new Label(shlSpigotServerBuilder, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label_3.setBounds(0, 244, 334, 2);
+		label_3.setBounds(0, 163, 420, 2);
 
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shlSpigotServerBuilder,
 				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setBounds(340, 51, 854, 412);
+		scrolledComposite.setBounds(445, 31, 759, 409);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
@@ -251,10 +148,51 @@ public class MainGUI {
 		console.setEditable(false);
 		scrolledComposite.setContent(console);
 		scrolledComposite.setMinSize(console.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		String[] versions = { "latest", "1.13", "1.13.2", "1.13.1", "1.12.2", "1.12.1", "1.12", "1.11", "1.10", "1.9.4",
-				"1.9.2", "1.9", "1.8.8", "1.8.7", "1.8.3", "1.8" };
-		for (int i = 0; i < versions.length; i++) {
-			list.add(versions[i]);
+
+		combo = new Combo(shlSpigotServerBuilder, SWT.NONE);
+		combo.setBounds(15, 31, 91, 23);
+		combo.add("latest");
+
+		Button btnBrowse = new Button(shlSpigotServerBuilder, SWT.NONE);
+		btnBrowse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				DirectoryDialog dialog = new DirectoryDialog(shlSpigotServerBuilder);
+				dialog.setMessage("Select where the server should be created.");
+				String dir = dialog.open();
+				if (dir != null) {
+					text.setText(dir);
+					outputPath = dir;
+				}
+
+			}
+		});
+		btnBrowse.setBounds(337, 28, 75, 25);
+		btnBrowse.setText("Browse");
+
+		text = new Text(shlSpigotServerBuilder, SWT.BORDER);
+		text.setBounds(131, 31, 200, 21);
+
+		Label lblBuildtoolsDownloadProgress = new Label(shlSpigotServerBuilder, SWT.NONE);
+		lblBuildtoolsDownloadProgress.setBounds(10, 171, 168, 15);
+		lblBuildtoolsDownloadProgress.setText("BuildTools Download Progress:");
+
+		downloadProgress = new Label(shlSpigotServerBuilder, SWT.NONE);
+		downloadProgress.setBounds(183, 171, 41, 15);
+		downloadProgress.setText("0%");
+
+		Button btnAcceptMojangEula = new Button(shlSpigotServerBuilder, SWT.CHECK);
+		btnAcceptMojangEula.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				acceptedEULA = !acceptedEULA;
+			}	
+		});
+		btnAcceptMojangEula.setBounds(4, 138, 104, 16);
+		btnAcceptMojangEula.setText("Accept EULA?");
+
+		for (String v : versions) {
+			combo.add(v);
 		}
 	}
 }

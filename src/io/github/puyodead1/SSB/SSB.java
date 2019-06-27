@@ -1,11 +1,14 @@
 package io.github.puyodead1.SSB;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import io.github.puyodead1.SSB.utils.Utils;
 
 public class SSB {
 	public static String rev;
 	public static String buildToolsDownloadURL = "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar";
-	
+
 	public static void Log(String log) {
 		MainGUI.console.append(log + "\n");
 	}
@@ -15,17 +18,6 @@ public class SSB {
 		if (Utils.isWindows()) {
 			Log("Windows Detected");
 			InitWindows();
-		} else if (Utils.isUnix()) {
-			InitLinux();
-		} else if(Utils.isMac()) {
-			SSB.Log("Sorry, Mac is currently unsupported! 0_0 D:");
-			return;
-		} else if(Utils.isSolaris()) {
-			SSB.Log("Sorry, Solaris is currntly unsupported! 0_0 D:");
-			return;
-		}else {
-			SSB.Log("Hm, nice OS, unfortunatly its unsupported 0_0 D:, please contact me and let me know what OS this is so I can possibly add it :D");
-			return;
 		}
 	}
 
@@ -33,17 +25,7 @@ public class SSB {
 		Utils.CheckForDirectory(MainGUI.outputPath);
 		Utils.CheckForDirectory(MainGUI.outputPath + "\\SpigotServer");
 		Utils.CheckForDirectory(MainGUI.outputPath + "\\BuildTools");
-		Log("Checking for BuildTools.jar in BuildTools Directory...");
-		if (!Utils.CheckForBuildTools(MainGUI.outputPath)) {
-			SSB.Log("GREAT ERROR!");
-			System.out.println("GREAT ERROR");
-			return;
-		}
-		// BuildTools.jar found and so was an Existing Spigot jar!
-		System.out.println("DEBUG 1");
-		Utils.CreateEULA();
-		Utils.LauncherHandlerWindows();
-		return;
+		Utils.DownloadBuildTools();
 	}
 
 	public static void executeScript(String script) {
@@ -53,7 +35,9 @@ public class SSB {
 			p.waitFor(); // Wait for the process to finish.
 			System.out.println("Script executed successfully");
 		} catch (Exception e) {
-			e.printStackTrace();
+			StringWriter writer = new StringWriter();
+			e.printStackTrace(new PrintWriter(writer));
+			SSB.Log(writer.toString());
 		}
 	}
 
