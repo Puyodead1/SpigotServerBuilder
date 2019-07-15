@@ -2,7 +2,7 @@
 
 [SpigotMC Resource](https://www.spigotmc.org/resources/spigot-server-builder.63097/)<br>
 ![GitHub repo size](https://img.shields.io/github/repo-size/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
-[![Discord Server](https://discordapp.com/api/guilds/589200717277954093/embed.png)](https://discord.gg/mfMQvYW)
+[![Discord Server](https://discordapp.com/api/guilds/589200717277954093/embed.png)](https://discord.gg/tMzrSxQ)
 ![GitHub All Releases](https://img.shields.io/github/downloads/Puyodead1-Development/SpigotServerBuilder/total.svg?style=plastic)
 ![GitHub release](https://img.shields.io/github/release/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 ![GitHub issues](https://img.shields.io/github/issues/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
