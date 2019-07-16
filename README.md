@@ -8,6 +8,6 @@
 ![GitHub issues](https://img.shields.io/github/issues/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 ![GitHub](https://img.shields.io/github/license/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/Puyodead1/SpigotServerBuilder.svg?style=plastic)
+![GitHub last commit](https://img.shields.io/github/last-commit/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 
 For more info please see the SpigotMC resource. Link above.
