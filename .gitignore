@@ -3,3 +3,4 @@
 .settings
 bin
 SpigotServerBuilder-2.5.jar
+/target/

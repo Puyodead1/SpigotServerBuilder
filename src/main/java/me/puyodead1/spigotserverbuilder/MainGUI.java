@@ -1,4 +1,4 @@
-package io.github.puyodead1.SSB;
+package me.puyodead1.spigotserverbuilder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import io.github.puyodead1.SSB.utils.Utils;
+import me.puyodead1.spigotserverbuilder.utils.Utils;
 
 public class MainGUI {
 

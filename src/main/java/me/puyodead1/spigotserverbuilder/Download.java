@@ -1,4 +1,4 @@
-package io.github.puyodead1.SSB;
+package me.puyodead1.spigotserverbuilder;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -9,7 +9,7 @@ import java.net.URL;
 
 import org.eclipse.swt.widgets.Display;
 
-import io.github.puyodead1.SSB.utils.Utils;
+import me.puyodead1.spigotserverbuilder.utils.Utils;
 
 public class Download implements Runnable {
 

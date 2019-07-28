@@ -1,4 +1,4 @@
-package io.github.puyodead1.SSB.utils;
+package me.puyodead1.spigotserverbuilder.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.io.StringWriter;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.swt.widgets.Display;
 
-import io.github.puyodead1.SSB.MainGUI;
-import io.github.puyodead1.SSB.SSB;
+import me.puyodead1.spigotserverbuilder.MainGUI;
+import me.puyodead1.spigotserverbuilder.SSB;
 
 public class ScrubDirectory extends Thread {
 	

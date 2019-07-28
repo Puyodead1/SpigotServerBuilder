@@ -1,4 +1,4 @@
-package io.github.puyodead1.SSB.utils;
+package me.puyodead1.spigotserverbuilder.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 
 import org.eclipse.swt.widgets.Display;
 
-import io.github.puyodead1.SSB.MainGUI;
-import io.github.puyodead1.SSB.SSB;
+import me.puyodead1.spigotserverbuilder.MainGUI;
+import me.puyodead1.spigotserverbuilder.SSB;
 
 public class CompileBT extends Thread {
 

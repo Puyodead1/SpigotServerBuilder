@@ -1,9 +1,9 @@
-package io.github.puyodead1.SSB;
+package me.puyodead1.spigotserverbuilder;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import io.github.puyodead1.SSB.utils.Utils;
+import me.puyodead1.spigotserverbuilder.utils.Utils;
 
 public class SSB {
 	public static String rev;
