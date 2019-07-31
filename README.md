@@ -9,6 +9,6 @@
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 ![GitHub](https://img.shields.io/github/license/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Puyodead1-Development/SpigotServerBuilder.svg?style=plastic)
-[![Build Status](http://185.230.160.95:8080/buildStatus/icon?style=plastic&job=SpigotServerBuilder)](http://185.230.160.95:8080/job/SpigotServerBuilder/)
+[![Build Status](http://185.230.160.95:8080/buildStatus/icon?style=plastic&job=SpigotServerBuilder)](http://ci.puyodead1-development.me/job/SpigotServerBuilder/)
 
 For more info please see the SpigotMC resource. Link above.
