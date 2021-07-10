@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+:root {
+  --sidebar-width: 270px;
+}
+
+[data-theme^='light'],
+[data-theme] [data-theme^='light'] {
+  --primary: #000;
+  --light-on-dark: #ffffff;
+  --primaryBG: #ffffff;
+  --secondaryBG: #f2f3f5;
+  --sidebarBG: #f2f3f5;
+  --sidebar-color: #6a7480;
+  --btn-selected-bg: #e3e5e8;
+  --sidebar-item-selected-background: #dee0e5;
+  --sidebar-item-selected-color: #37393f;
+  --sidebar-item-hover-background: #e8eaed;
+  --sidebar-item-hover-color: #6a7480;
+  --settings-hoverBG: #e8eaed;
+  --secondary-background-color: #d4d7dc;
+}
+
+[data-theme^='dark'],
+[data-theme] [data-theme^='dark'] nav {
+  --primary: #fff;
+  --light-on-dark: #fff;
+  --primaryBG: #36393f;
+  --secondaryBG: #2f3136;
+  --sidebarBG: #2f3136;
+  --sidebar-color: #72767d;
+  --sidebar-item-selected-background: #393c43;
+  --sidebar-item-selected-color: #aaa;
+  --sidebar-item-hover-background: #34373c;
+  --sidebar-item-hover-color: #72767d;
+  --settings-hoverBG: #3a3e44;
+  --secondary-background-color: #4f545c;
+  --radio-selected-bg: #202225;
+}
+
+html {
+  background-color: var(--primaryBG);
+  color: var(--primary);
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+}
+
+#root,
+#root2,
+body,
+html {
+  height: 99vh;
+}
+
+#root2 {
+  margin-bottom: 20px;
+}
+
+/* The sidebar menu */
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  width: var(--sidebar-width) - 10;
+  position: fixed;
+  z-index: 1;
+  background-color: var(--sidebarBG);
+  overflow-x: hidden;
+  border-radius: 10px;
+  height: 98vh;
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: var(--sidebar-color);
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  /* color: #f1f1f1; */
+  color: var(--sidebar-item-hover-color);
+  background-color: var(--sidebar-item-hover-background);
+  cursor: pointer;
+}
+
+.sidenav a:active {
+  background-color: var(--sidebar-item-selected-background);
+}
+
+/* Style page content */
+.content {
+  margin-left: var(--sidebar-width);
+  padding: 0px 10px;
+  text-align: center;
+  background-color: var(--secondaryBG);
+  border-radius: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 98vh;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+.sidenav a.active {
+  color: var(--sidebar-item-selected-color);
+  background-color: var(--sidebar-item-selected-background);
+}
+
+.sidenav img {
+  vertical-align: middle;
+}
+
+.sidenav .item {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  width: 100%;
+}
+
+.sidenav a.item img {
+  margin-right: 10px;
+}
+
+.zero-padding {
+  padding: 0 !important;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.svg-icon {
+  fill: var(--sidebar-color);
+  color: var(--sidebar-color);
+  margin-right: 10px;
+}
+
+.svg-icon-64 {
+  width: 64px;
+}
+
+.svg-icon-32 {
+  width: 32px;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;
+  background-color: var(--sidebar-color);
+  height: 1px;
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.settings-panel {
+  background-color: var(--secondaryBG);
+  border-radius: 10px;
+  flex: 1;
+  padding: 10px;
+}
+
+.settings-panel:nth-child(1) {
+  margin: 10px 0 10px 0;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.btn {
+  border-radius: 3px;
+  background-color: var(--secondary-background-color);
+  color: var(--primary);
+  border: none;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  padding: 2px 16px;
+  height: 32px;
+  min-width: 60px;
+  min-height: 32px;
+  width: auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  align-items: center;
+  flex: 1 1 auto;
+  user-select: none;
+}
+
+.btn:not(:nth-child(0)) {
+  margin-right: 10px;
+}
+
+.btn:hover {
+  background-color: var(--settings-hoverBG);
+}
+
+.radio {
+  background-color: var(--background-secondary);
+}
